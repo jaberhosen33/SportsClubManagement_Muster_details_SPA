@@ -1,0 +1,87 @@
+﻿ @model SportsClubManagement_SPA_Muster_details.Models.ViewModel.MemberVm
+
+<form asp-action="_AddMember" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Age"></label>
+        <input asp-for="Age" class="form-control" type="number" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DOB"></label>
+        <input asp-for="DOB" class="form-control" type="date" />
+        <span asp-validation-for="DOB" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PicturePath">Upload Image</label>
+        <input asp-for="PicturePath" type="file" class="form-control-file" />
+        <span asp-validation-for="PicturePath" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MorningShift">Morning Shift</label>
+        <select asp-for="MorningShift" class="form-control">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+        <span asp-validation-for="MorningShift" class="text-danger"></span>
+    </div>
+    @* <button class="btn-info" onclick="AddDynamicSelect()" type="button">Add</button> *@
+
+    @* <div id="dynamicSelectContainer" class="form-group">
+    <label>Select Subjects</label>
+    <div>
+    <select name="SubjectList[0]" class="form-control">
+    @foreach (var subject in ViewBag.Subjects)
+    {
+    <option value="@subject.Value">@subject.Text</option>
+    }
+    </select>
+    </div> *@
+
+
+    @* </div> *@
+
+    @* <div class="form-group">
+    <select asp-for="SubjectList" asp-items="ViewBag.Subjects" class="form-control">
+    <option asp-for="SubjectList" value="SubjectId">Select</option>
+    </select>
+    </div>
+    <div class="form-group">
+    <select asp-for="SubjectList" asp-items="ViewBag.Subjects" class="form-control">
+    <option asp-for="SubjectList" value="SubjectId">Select</option>
+    </select>
+    </div> *@
+    <button class="btn btn-outline-success " id="btnAdd">Add More Activity</button>
+    <div id="container">
+        @Html.Partial("_AddNewActivity")
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+<script>
+    $("#btnAdd").click(function (e) {
+           e.preventDefault();
+           var subjectContainer = $("#container");
+           $.ajax({
+            url: "/MembersController1/AddNewActivity",
+               type: "GET",
+               success: function (data) {
+                   subjectContainer.append(data)
+               }
+           });
+       });
+</script>

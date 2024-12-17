@@ -1,0 +1,11 @@
+﻿@model SportsClubManagement_SPA_Muster_details.Models.ViewModel.MemberVm
+<div class="form-group">
+    @*  @Html.DropDownListFor(x=>x.SubjectId ,ViewBag.Subjects as SelectList,"selsect",htmlAttributes: new{@class="form-control"}); *@
+
+    <div class="form-group">
+        <label asp-for="ActivityList">Select Activity</label>
+        <select asp-for="ActivityList" asp-items="ViewBag.activity" class="form-control" multiple>
+        </select>
+        <span asp-validation-for="ActivityList" class="text-danger"></span>
+    </div>
+</div>

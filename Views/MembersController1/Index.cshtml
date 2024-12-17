@@ -1,0 +1,184 @@
+﻿@model IEnumerable<Member>
+@{
+    ViewData["Title"] = "Index";
+}
+<h4>Member List</h4>
+@* 
+@if (@TempData["Message"] != null)
+{
+    <script>
+          var mssg ='@TempData["Message"]';
+        alert(mssg);
+    </script>
+} *@
+
+
+<button type="button" class="btn btn-primary" onclick="openAddStudentModal()">
+    Add New Member
+</button>
+
+@* <div class="container-fluid mt-5">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 m-2">
+                <div class="card " style="width: 18rem;">
+                    <img src="@item.Picture" width="150" height="180" class="card-img-top ps-2 pe-2" alt="Student Picture" />
+                    <div class="card-body">
+                        <h5 class="card-title">Name: @item.StudentName</h5>
+                        <h5>Age: @item.Age</h5>
+                        <h5>Dob: @item.DateOfBirth.ToShortDateString()</h5>
+                        @if (item.MorningShift == "yes")
+                        {
+                            <h5>Shift: Morning</h5>
+                        }
+                        else
+                        {
+                            <h5>Shift: Evening</h5>
+                        }
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Subjects Id</th>
+                                    <th>Subjects Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in item.Addmissions)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(x => i.Subject.SubjectId)</td>
+                                        <td>@Html.DisplayFor(x => i.Subject.SubjectName)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> *@
+
+<div class="container mt-5">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <!-- Image Section -->
+                        <div class="col-md-4">
+                            <img src="@item.Picture" height="180px" class="img-fluid rounded-start mt-3" alt="Member Picture">
+                        </div>
+
+                        <!-- Content Section -->
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Name: @item.Name</h5>
+                                <p class="card-text">Age: @item.Age</p>
+                                <p class="card-text">Dob: @item.DOB.ToShortDateString()</p>
+
+                                @if (item.MorningShift == true)
+                                {
+                                    <p class="card-text">Shift: Morning</p>
+                                }
+                                else
+                                {
+                                    <p class="card-text">Shift: Evening</p>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="col-md-8">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Activity Id</th>
+                                            <th>Activity Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var i in item.Enrollments)
+                                        {
+                                            <tr>
+                                                <td>@Html.DisplayFor(x => i.Activity.ActivityID)</td>
+                                                <td>@Html.DisplayFor(x => i.Activity.ActivityName)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-4 mt-5 ms-3">
+                                <button type="button" class="btn btn-outline-success" onclick="openEditStudentModal(@item.MemberID)">Edit</button> |
+                                <a asp-action="Delete" asp-controller="Members" asp-route-id="@item.MemberID" class="btn btn-outline-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Member</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBodyContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Student</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBodyContent1">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAddStudentModal() {
+        $.ajax({
+            url: '@Url.Action("AddMember", "MembersController1")',
+            type: 'GET',
+            success: function (result) {
+                $('#modalBodyContent').html(result);
+                $('#exampleModal').modal('show'); // Open modal after loading content
+            },
+            error: function (xhr, status, error) {
+                console.log("Error loading modal content: " + error);
+            }
+        });
+    }
+
+
+</script>
+<script>
+    function openEditStudentModal(studentId) {
+        $.ajax({
+            url: '@Url.Action("EditMember", "MembersController1")' + '?id=' + studentId,
+            type: 'GET',
+            success: function (result) {
+                $('#modalBodyContent1').html(result);
+                $('#exampleModal1').modal('show'); // Open modal after loading content
+            },
+            error: function (xhr, status, error) {
+                console.log("Error loading modal content: " + error);
+            }
+        });
+    }
+</script>
