@@ -6,7 +6,7 @@ namespace SportsClubManagement_SPA_Muster_details.Models.ViewModel
     {
         public  MemberVm()
         { 
-            this.ActivityList=new List<Activity>();
+            this.ActivityList=new List<int>();
 
         }
         public int MemberID { get; set; }
@@ -23,7 +23,7 @@ namespace SportsClubManagement_SPA_Muster_details.Models.ViewModel
         public string? Picture { get; set; }
         public IFormFile PicturePath { get; set; }
 
-        public IList<Activity> ActivityList { get; set; }
+        public IList<int> ActivityList { get; set; }
 
 
     }

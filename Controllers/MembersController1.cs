@@ -83,7 +83,7 @@ namespace SportsClubManagement_SPA_Muster_details.Controllers
                     _db.Enrollments.Add(new Enrollment
                     {
                         MemberID = member.MemberID,
-                        ActivityID = activity.ActivityID
+                        ActivityID = activity
                     });
                 }
 
